@@ -1,5 +1,7 @@
 'use client';
 
+export const dynamic = 'force-dynamic';
+
 import { MenuCard } from '@/components/MenuCard';
 import { Cart } from '@/components/Cart';
 import { MenuItem } from '@/types';

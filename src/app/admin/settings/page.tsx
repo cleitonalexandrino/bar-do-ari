@@ -1,29 +1,28 @@
 'use client';
 
+export const dynamic = 'force-dynamic';
+
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { db, auth } from '@/lib/firebase';
 import { collection, writeBatch, doc } from 'firebase/firestore';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { useState } from 'react';
-import { Database, UserPlus, Loader2, Sparkles, ShieldCheck } from 'lucide-react';
+import { Database, UserPlus, Loader2, ShieldCheck } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { motion } from 'framer-motion';
 
-const CATEGORIES = ['Pratos / Refeições', 'Bebidas', 'Porções', 'Sobremesas'];
-
 const MOCK_ITEMS = [
-  { name: 'Feijoada Completa', description: 'Arroz, couve, farofa e torresmo.', price: 35.00, category: 'Pratos / Refeições', is_available: true },
-  { name: 'Cerveja 600ml', description: 'Original, Skol ou Brahma.', price: 12.00, category: 'Bebidas', is_available: true },
-  { name: 'Porção de Batata', description: 'Batata frita crocante 400g.', price: 25.00, category: 'Porções', is_available: true },
+  { name: 'Feijoada Completa', description: 'Arroz, couve, farofa e torresmo.', price: 35.0, category: 'Pratos / Refeições', is_available: true },
+  { name: 'Cerveja 600ml', description: 'Original, Skol ou Brahma.', price: 12.0, category: 'Bebidas', is_available: true },
+  { name: 'Porção de Batata', description: 'Batata frita crocante 400g.', price: 25.0, category: 'Porções', is_available: true },
 ];
 
 export default function Settings() {
   const [loading, setLoading] = useState(false);
   const [adminEmail, setAdminEmail] = useState('');
   const [adminPassword, setAdminPassword] = useState('');
-  const [status, setStatus] = useState('');
 
   const seedDatabase = async () => {
     if (!db) {
@@ -32,9 +31,7 @@ export default function Settings() {
     }
     
     setLoading(true);
-    setStatus('Semeando itens...');
     try {
-      // Use non-null assertion since we checked it above
       const batch = writeBatch(db!);
       MOCK_ITEMS.forEach((item) => {
         const newDocRef = doc(collection(db!, 'menu_items'));
@@ -47,7 +44,6 @@ export default function Settings() {
       alert('Erro ao semear banco.');
     } finally {
       setLoading(false);
-      setStatus('');
     }
   };
 
@@ -59,9 +55,8 @@ export default function Settings() {
     }
 
     setLoading(true);
-    setStatus('Criando conta...');
     try {
-      await createUserWithEmailAndPassword(auth, adminEmail, adminPassword);
+      await createUserWithEmailAndPassword(auth!, adminEmail, adminPassword);
       alert('Administrador criado! Use esses dados para logar.');
       setAdminEmail('');
       setAdminPassword('');
@@ -69,7 +64,6 @@ export default function Settings() {
       alert('Erro: ' + e.message);
     } finally {
       setLoading(false);
-      setStatus('');
     }
   };
 
@@ -152,7 +146,7 @@ export default function Settings() {
       <div className="flex justify-center pt-8">
          <div className="flex items-center gap-3 bg-zinc-100/50 px-6 py-3 rounded-full border border-zinc-200">
             <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
-            <span className="text-[10px] font-black uppercase tracking-widest text-zinc-500">Firebase Securty v4 Active</span>
+            <span className="text-[10px] font-black uppercase tracking-widest text-zinc-500">Firebase Security Ready</span>
          </div>
       </div>
     </div>
