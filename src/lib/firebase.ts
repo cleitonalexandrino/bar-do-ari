@@ -12,9 +12,16 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID
 };
 
-const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
-const db = getFirestore(app);
-const auth = getAuth(app);
-const storage = getStorage(app);
+// Check if we have at least the API Key to avoid build errors in Vercel
+const isFirebaseConfigured = !!firebaseConfig.apiKey;
+
+const app = (getApps().length === 0 && isFirebaseConfigured) 
+  ? initializeApp(firebaseConfig) 
+  : (getApps().length > 0 ? getApp() : null);
+
+// Provide dummy object if Firebase is not configured to avoid crashing during build
+const db = app ? getFirestore(app) : ({} as any);
+const auth = app ? getAuth(app) : ({} as any);
+const storage = app ? getStorage(app) : ({} as any);
 
 export { app, db, auth, storage };
