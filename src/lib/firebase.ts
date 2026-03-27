@@ -13,27 +13,31 @@ const firebaseConfig = {
 };
 
 // Debug logs for production (temporary)
-const isFirebaseConfigured = !!firebaseConfig.apiKey;
+const isFirebaseConfigured = !!firebaseConfig.apiKey && !!firebaseConfig.projectId;
 
 if (typeof window !== 'undefined') {
-  console.log('Firebase Init Check:', {
-    hasApiKey: isFirebaseConfigured,
-    projectId: firebaseConfig.projectId,
-    appCount: getApps().length
-  });
+  console.log('--- Firebase Debug ---');
+  console.log('Project ID:', firebaseConfig.projectId);
+  console.log('Has API Key:', !!firebaseConfig.apiKey);
+  console.log('Environment:', process.env.NODE_ENV);
+  console.log('----------------------');
 }
 
-const app = (getApps().length === 0 && isFirebaseConfigured) 
-  ? initializeApp(firebaseConfig) 
-  : (getApps().length > 0 ? getApp() : null);
+let app;
+try {
+  if (isFirebaseConfigured) {
+    app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
+  }
+} catch (error) {
+  console.error('Firebase Initialization Error:', error);
+}
+
+const db = app ? getFirestore(app) : null;
+const auth = app ? getAuth(app) : null;
+const storage = app ? getStorage(app) : null;
 
 if (!app && typeof window !== 'undefined') {
-  console.error('FIREBASE FAILED TO INITIALIZE. Check NEXT_PUBLIC_FIREBASE_API_KEY in Vercel settings.');
+  console.warn('⚠️ FIREBASE NOT INITIALIZED: Using fallback mode. Please check Vercel environment variables.');
 }
-
-// Provide dummy object if Firebase is not configured to avoid crashing during build
-const db = app ? getFirestore(app) : ({} as any);
-const auth = app ? getAuth(app) : ({} as any);
-const storage = app ? getStorage(app) : ({} as any);
 
 export { app, db, auth, storage };
