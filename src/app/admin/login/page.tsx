@@ -22,6 +22,10 @@ export default function LoginPage() {
     setLoading(true);
     setError('');
     try {
+      if (!auth) {
+        setError('O sistema de autenticação não está disponível. Verifique as configurações do Firebase.');
+        return;
+      }
       await signInWithEmailAndPassword(auth, email, password);
       router.push('/admin');
     } catch (err: any) {
