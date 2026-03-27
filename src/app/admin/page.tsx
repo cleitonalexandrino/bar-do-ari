@@ -32,6 +32,11 @@ export default function AdminDashboard() {
   }, []);
 
   const fetchStats = async () => {
+    if (!db) {
+      setLoading(false);
+      return;
+    }
+    
     setLoading(true);
     try {
       const today = new Date();
