@@ -67,11 +67,11 @@ export default function Home() {
 
       {/* Header Brutalista */}
       <header className="sticky top-0 z-50 w-full bg-primary border-b-4 border-black shadow-[0_4px_0_0_rgba(0,0,0,1)]">
-        <div className="container mx-auto px-4 h-20 flex items-center justify-between">
+        <div className="container mx-auto px-4 h-20 flex items-center justify-between gap-2">
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="flex items-center gap-3 cursor-pointer"
+            className="flex items-center gap-2 sm:gap-3 cursor-pointer min-w-0"
           >
             <div className="border-2 border-black bg-white p-1 shadow-[2px_2px_0_0_rgba(0,0,0,1)]">
               <Image

@@ -30,15 +30,15 @@ export function Cart() {
         render={
         <Button 
           variant="default" 
-          className="relative group overflow-hidden transition-all duration-500 rounded-2xl h-14 px-6 bg-zinc-900 border-b-4 border-zinc-800 active:border-b-0 active:translate-y-1"
+          className="relative group overflow-hidden transition-all duration-500 rounded-2xl h-11 sm:h-14 px-3 sm:px-6 bg-zinc-900 border-b-4 border-zinc-800 active:border-b-0 active:translate-y-1"
         >
-          <ShoppingCart className="w-6 h-6 mr-3 text-primary animate-pulse" />
-          <span className="font-heading text-lg font-black tracking-tight text-white">Meu Pedido</span>
+          <ShoppingCart className="w-5 h-5 sm:w-6 sm:h-6 sm:mr-3 text-primary animate-pulse" />
+          <span className="hidden sm:inline font-heading text-lg font-black tracking-tight text-white">Meu Pedido</span>
           {totalItems > 0 && (
             <motion.span 
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
-              className="ml-3 bg-cta text-white text-[10px] font-black w-6 h-6 rounded-lg flex items-center justify-center shadow-lg shadow-cta/20"
+              className="ml-2 sm:ml-3 bg-cta text-white text-[9px] sm:text-[10px] font-black w-5 h-5 sm:w-6 sm:h-6 rounded-lg flex items-center justify-center shadow-lg shadow-cta/20"
             >
               {totalItems}
             </motion.span>
