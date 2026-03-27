@@ -26,12 +26,18 @@ export default function Settings() {
   const [status, setStatus] = useState('');
 
   const seedDatabase = async () => {
+    if (!db) {
+      alert('Banco de dados não inicializado.');
+      return;
+    }
+    
     setLoading(true);
     setStatus('Semeando itens...');
     try {
-      const batch = writeBatch(db);
+      // Use non-null assertion since we checked it above
+      const batch = writeBatch(db!);
       MOCK_ITEMS.forEach((item) => {
-        const newDocRef = doc(collection(db, 'menu_items'));
+        const newDocRef = doc(collection(db!, 'menu_items'));
         batch.set(newDocRef, { ...item, created_at: new Date() });
       });
       await batch.commit();
@@ -47,6 +53,11 @@ export default function Settings() {
 
   const createAdmin = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!auth) {
+      alert('Sistema de autenticação não inicializado.');
+      return;
+    }
+
     setLoading(true);
     setStatus('Criando conta...');
     try {
