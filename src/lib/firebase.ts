@@ -12,12 +12,24 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID
 };
 
-// Check if we have at least the API Key to avoid build errors in Vercel
+// Debug logs for production (temporary)
 const isFirebaseConfigured = !!firebaseConfig.apiKey;
+
+if (typeof window !== 'undefined') {
+  console.log('Firebase Init Check:', {
+    hasApiKey: isFirebaseConfigured,
+    projectId: firebaseConfig.projectId,
+    appCount: getApps().length
+  });
+}
 
 const app = (getApps().length === 0 && isFirebaseConfigured) 
   ? initializeApp(firebaseConfig) 
   : (getApps().length > 0 ? getApp() : null);
+
+if (!app && typeof window !== 'undefined') {
+  console.error('FIREBASE FAILED TO INITIALIZE. Check NEXT_PUBLIC_FIREBASE_API_KEY in Vercel settings.');
+}
 
 // Provide dummy object if Firebase is not configured to avoid crashing during build
 const db = app ? getFirestore(app) : ({} as any);
