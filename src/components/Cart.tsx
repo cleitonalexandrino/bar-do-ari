@@ -3,11 +3,12 @@
 import { useCartStore } from '@/lib/store';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
-import { ShoppingCart, Minus, Plus, Trash2, ArrowRight } from 'lucide-react';
+import { ShoppingCart, Minus, Plus, Trash2, ArrowRight, MessageSquare } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { useState } from 'react';
 import { CheckoutForm } from './CheckoutForm';
+import { generateWhatsAppLink } from '@/lib/api';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export function Cart() {
@@ -137,14 +138,28 @@ export function Cart() {
                       </div>
                     </div>
                     
-                    <Button 
-                      className="w-full h-16 rounded-3xl text-lg font-black bg-primary hover:bg-primary/90 shadow-xl shadow-primary/20 gap-3 group" 
-                      size="lg" 
-                      onClick={() => setIsCheckoutOpen(true)}
-                    >
-                      Check-out Premium
-                      <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                    </Button>
+                    <div className="flex flex-col gap-3 pb-2 pt-4">
+                      <Button 
+                        className="w-full h-16 rounded-3xl text-lg font-black bg-primary hover:bg-primary/90 shadow-xl shadow-primary/20 gap-3 group" 
+                        size="lg" 
+                        onClick={() => setIsCheckoutOpen(true)}
+                      >
+                        Check-out Premium
+                        <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                      </Button>
+
+                      <Button 
+                        variant="outline"
+                        className="w-full h-14 rounded-2xl text-xs font-black uppercase tracking-widest border-2 border-black bg-white hover:bg-zinc-50 shadow-[4px_4px_0_0_rgba(0,0,0,1)] active:shadow-none active:translate-y-1 transition-all gap-2" 
+                        onClick={() => {
+                          const link = generateWhatsAppLink(items, getTotal(), 'À combinar no Chat', 'Chat', 'Pedido Rápido via Carrinho');
+                          window.open(link, '_blank');
+                        }}
+                      >
+                        <MessageSquare className="w-4 h-4 text-emerald-500" />
+                        WhatsApp Rápido
+                      </Button>
+                    </div>
                   </div>
                 </>
               )}
